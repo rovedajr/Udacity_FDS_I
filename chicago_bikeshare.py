@@ -67,7 +67,8 @@ def column_to_list(data, index):
         A list with all the entries on that column.
     '''
     column_list = []
-    for i in range(len(data)):
+    # index or row are far better names than just i; name variables are supposed to be self-explanatory
+    for iindex in range(len(data)):
         column_list.append(data[i][index])
     # Tip: You can use a for to iterate over the samples, get the feature by index and append into a list
 
@@ -191,6 +192,13 @@ input("Press Enter to continue...")
 print("\nTASK 7: Check the chart!")
 
 def count_type(data_list):
+    '''
+    A function to count customer types.
+    Args:
+        Unique argument: the dataset.
+    Returns:
+        The number of each type of customer – Customer, Subscriber and Dependent.
+    '''
     customer = 0
     subscriber = 0
     dependent = 0
