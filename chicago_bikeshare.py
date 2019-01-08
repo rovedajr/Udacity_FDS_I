@@ -30,9 +30,9 @@ input("Press Enter to continue...")
 # TODO: Print the first 20 rows using a loop to identify the data.
 print("\n\nTASK 1: Printing the first 20 samples")
 
-for i in range(20):
-    print("Row {}".format(i))
-    print(data_list[i])
+for line in range(20):
+    print("Row {}".format(line))
+    print(data_list[line])
 
 # Let's change the data_list to remove the header from it.
 data_list = data_list[1:]
@@ -68,8 +68,8 @@ def column_to_list(data, index):
     '''
     column_list = []
     # index or row are far better names than just i; name variables are supposed to be self-explanatory
-    for iindex in range(len(data)):
-        column_list.append(data[i][index])
+    for row in range(len(data)):
+        column_list.append(data[row][index])
     # Tip: You can use a for to iterate over the samples, get the feature by index and append into a list
 
     return column_list
@@ -92,10 +92,10 @@ input("Press Enter to continue...")
 male = 0
 female = 0
 
-for i in range(len(data_list)):
-    if data_list[i][6] == 'Male':
+for entry in range(len(data_list)):
+    if data_list[entry][6] == 'Male':
         male += 1
-    elif data_list[i][6] == 'Female':
+    elif data_list[entry][6] == 'Female':
         female += 1
 
 
@@ -254,8 +254,8 @@ max_trip = int(sorted(trip_duration_list, key = int)[-1])
 
 # This one adds up all the values of the list and divides it by the length of the list
 total = 0
-for i in trip_duration_list:
-    total += int(i)
+for duration in trip_duration_list:
+    total += int(duration)
 mean_trip = round(total/len(trip_duration_list))
 
 # In order to calculate the median value:
