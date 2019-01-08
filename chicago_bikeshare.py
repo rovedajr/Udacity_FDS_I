@@ -45,8 +45,9 @@ input("Press Enter to continue...")
 # TODO: Print the `gender` of the first 20 rows
 
 print("\nTASK 2: Printing the genders of the first 20 samples")
-for i in range(20):
-    print(data_list[i][6])
+
+for line in data_list[:20]:
+    print(line[6])
 
 # Cool! We can get the rows(samples) iterating with a for and the columns(features) by index.
 # But it's still hard to get a column in a list. Example: List with all genders
@@ -55,10 +56,16 @@ input("Press Enter to continue...")
 # TASK 3
 # TODO: Create a function to add the columns(features) of a list in another list in the same order
 
-'''
-    column_to_list grabs the data from the csv-turned-list, using the index argument as a paramenter of the desired data – for instance: 6 for gender, 2 for trip duration, 5 for user type, and so on...
-'''
 def column_to_list(data, index):
+    '''
+    (Changed as required in code revision...)
+    This function generates a list based on a certain column of a list.
+    Args:
+        param1: data (the dataset)
+        param2: index (the position of the data).
+    Returns:
+        A list with all the entries on that column.
+    '''
     column_list = []
     for i in range(len(data)):
         column_list.append(data[i][index])
@@ -84,10 +91,6 @@ input("Press Enter to continue...")
 male = 0
 female = 0
 
-'''
-    This loop iterates through the data_list on position 6 and checks if the result is male or female and increases the count of the male and female values accordingly.
-'''
-
 for i in range(len(data_list)):
     if data_list[i][6] == 'Male':
         male += 1
@@ -103,20 +106,23 @@ print("Male: ", male, "\nFemale: ", female)
 assert male == 935854 and female == 298784, "TASK 4: Count doesn't match."
 # -----------------------------------------------------
 
-'''
-My own observation here: there's a typo in create on line 110
-'''
+# there's a typo on line 108
+
 input("Press Enter to continue...")
 # Why don't we creeate a function to do that?
 # TASK 5
 # TODO: Create a function to count the genders. Return a list
 # Should return a list with [count_male, counf_female] (e.g., [10, 15] means 10 Males, 15 Females)
 
-'''
-This function uses only the data_list as argument and extracts exclusively the values from the [6] position.
-'''
 
 def count_gender(data_list):
+    '''
+    This function counts each gender on the list.
+    Args:
+        Unique argument: the dataset
+    Returns:
+        The total count of each gender in the list
+    '''
     male = 0
     female = 0
     for entry in data_list:
@@ -142,11 +148,20 @@ input("Press Enter to continue...")
 # TODO: Create a function to get the most popular gender and print the gender as string.
 # We expect to see "Male", "Female" or "Equal" as answer.
 def most_popular_gender(data_list):
+    '''
+    This function compares the number of entries of each male and female and returns an answer accordingly.
+    Args:
+        Unique argument: the dataset
+    Returns:
+        An answer based on the numerical comparison between the genders.
+    '''
     answer = ""
     if count_gender(data_list)[0] < count_gender(data_list)[1]:
         answer = "Female"
     elif count_gender(data_list)[0] > count_gender(data_list)[1]:
         answer = "Male"
+    elif count_gender(data_list)[0] == count_gender(data_list)[1]:
+        answer = "Equal"
     return answer
 
 
@@ -178,15 +193,18 @@ print("\nTASK 7: Check the chart!")
 def count_type(data_list):
     customer = 0
     subscriber = 0
+    dependent = 0
     for entry in data_list:
         if entry[5] == "Customer":
             customer += 1
+        elif entry[5] == 'Dependent':
+            dependent += 1
         else:
             subscriber += 1
-    return[customer, subscriber]
+    return[customer, subscriber, dependent]
 
 gender_list = column_to_list(data_list, -2)
-types = ["Customer", "Subscriber"]
+types = ["Customer", "Subscriber", "Dependent"]
 quantity = count_type(data_list)
 y_pos = list(range(len(types)))
 plt.bar(y_pos, quantity)
@@ -220,40 +238,36 @@ max_trip = 0.
 mean_trip = 0.
 median_trip = 0.
 
-''' Instead of iterating through each item of this list, compare it to the next element and return the smaller value of the two in order to find the shortest trip, one simple solution is to sort the values on ascending order and take the first value for shortest and last value for longest trip.'''
+# Instead of iterating through each item of this list, compare it to the next element and return the smaller value of the two in order to find the shortest trip, one simple solution is to sort the values on ascending order and take the first value for shortest and last value for longest trip.
+
 
 min_trip = int(sorted(trip_duration_list, key = int)[0])
 max_trip = int(sorted(trip_duration_list, key = int)[-1])
 
-'''This one adds up all the values of the list and divides it by the length of the list'''
+# This one adds up all the values of the list and divides it by the length of the list
 total = 0
 for i in trip_duration_list:
     total += int(i)
 mean_trip = round(total/len(trip_duration_list))
 
-'''In order to calculate the median value:
-    1) convert the strings on the list to floats;
-    2) assign variables to the length of the list and to the sorted list;
-    3) checks if the list has an odd or even number of elements;
-    4) if even, takes the product of division of the two elements in the middle of the list;
-    5) if odd, adds a number to the element count and split it in half;
-
-    Note that line 238 was splitted for reading purposes
-'''
+# In order to calculate the median value:
+# 1) convert the strings on the list to floats;
+# 2) assign variables to the length of the list and to the sorted list;
+# 3) checks if the list has an odd or even number of elements;
+# 4) if even, takes the product of division of the two elements in the middle of the list;
+# 5) if odd, adds a number to the element count and split it in half;
+# Note that line 238 was splitted for reading purposes
 
 trip_duration_list = list(map(float,trip_duration_list))
 list_len = len(trip_duration_list)
 list_sorted = sorted(trip_duration_list)
 
 if list_len % 2 == 0:
-    # print('even, Steven')
     median_trip = (list_sorted[int((list_len / 2))]
     + list_sorted[int((list_len / 2) + 1)]) / 2.0
 else:
-    # print('pretty odd, Todd')
     median_trip = list_sorted[int(((list_len + 1) / 2))]
     
-
 
 print("\nTASK 9: Printing the min, max, mean and median")
 print("Min: ", min_trip, "Max: ", max_trip, "Mean: ", mean_trip, "Median: ", median_trip)
@@ -299,11 +313,14 @@ input("Press Enter to continue...")
 # TODO: Create a function to count user types without hardcoding the types
 # so we can use this function with a different kind of data.
 print("Will you face it?")
-answer = "yes"
+answer = "no"
 
 def count_items(column_list):
-    item_types = list(set(column_list))
-    count_items = [len(column_list)]
+
+# Due to time constraints I'll have to abort this one
+
+    item_types = list()
+    count_items = []
     return item_types, count_items
 
 
